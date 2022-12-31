@@ -10,12 +10,12 @@
 
 import React from 'react';
 
-import HomeScreen from './src/navigation/Home/HomeScreen';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DetailScreen from './src/navigation/DetailScreen';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import HomeScreen from './src/navigation/Home/HomeScreen';
 
 const App = () => {
     const queryClient = new QueryClient();
