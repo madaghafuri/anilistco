@@ -8,91 +8,45 @@
  * @format
  */
 
-import { ApolloProvider } from '@apollo/client/react';
-import React, { type PropsWithChildren } from 'react';
-import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    useColorScheme,
-    View,
-} from 'react-native';
+import React from 'react';
 
-import {
-    Colors,
-    DebugInstructions,
-    Header,
-    LearnMoreLinks,
-    ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import { client } from './src/api/apollo';
-import HomeScreen from './src/navigation/HomeScreen';
-
-const Section: React.FC<
-    PropsWithChildren<{
-        title: string;
-    }>
-> = ({ children, title }) => {
-    const isDarkMode = useColorScheme() === 'dark';
-    return (
-        <View style={styles.sectionContainer}>
-            <Text
-                style={[
-                    styles.sectionTitle,
-                    {
-                        color: isDarkMode ? Colors.white : Colors.black,
-                    },
-                ]}>
-                {title}
-            </Text>
-            <Text
-                style={[
-                    styles.sectionDescription,
-                    {
-                        color: isDarkMode ? Colors.light : Colors.dark,
-                    },
-                ]}>
-                {children}
-            </Text>
-        </View>
-    );
-};
+import HomeScreen from './src/navigation/Home/HomeScreen';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import DetailScreen from './src/navigation/DetailScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const App = () => {
-    const isDarkMode = useColorScheme() === 'dark';
-
-    const backgroundStyle = {
-        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    };
+    const queryClient = new QueryClient();
+    const Stack = createNativeStackNavigator();
 
     return (
-        <ApolloProvider client={client}>
-            <SafeAreaView style={backgroundStyle}>
-                <HomeScreen />
-            </SafeAreaView>
-        </ApolloProvider>
+        <QueryClientProvider client={queryClient}>
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen
+                        options={{
+                            headerStyle: { backgroundColor: Colors.darker },
+                            headerTitleStyle: { color: 'white' },
+                            contentStyle: { backgroundColor: Colors.darker },
+                        }}
+                        name="Home"
+                        component={HomeScreen}
+                    />
+                    <Stack.Screen
+                        options={{
+                            headerStyle: { backgroundColor: Colors.darker },
+                            headerTitleStyle: { color: 'white' },
+                            contentStyle: { backgroundColor: Colors.darker },
+                        }}
+                        name="Details"
+                        component={DetailScreen}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </QueryClientProvider>
     );
 };
-
-const styles = StyleSheet.create({
-    sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24,
-    },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: '600',
-    },
-    sectionDescription: {
-        marginTop: 8,
-        fontSize: 18,
-        fontWeight: '400',
-    },
-    highlight: {
-        fontWeight: '700',
-    },
-});
 
 export default App;
